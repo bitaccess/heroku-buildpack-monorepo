@@ -16,6 +16,7 @@ fi
 APP_BASE="$(cat "${ENV_DIR}/APP_BASE")"
 
 (
+
     mv "${BUILD_DIR}/packages/${APP_BASE}" "${STAGE_APP}" &&
     rm -rf "${BUILD_DIR}/packages/${APP_BASE}" &&
     mv "${BUILD_DIR}/packages/" "${STAGE_PACKAGES}" &&
@@ -23,12 +24,26 @@ APP_BASE="$(cat "${ENV_DIR}/APP_BASE")"
     rm -rf "${BUILD_DIR}" &&
     mv "${STAGE_APP}/$(basename "$APP_BASE")" "${BUILD_DIR}"
     mv "${STAGE_PACKAGES}/packages" "${BUILD_DIR}/packages"
+
+    mkdir -p "${BUILD_DIR}/node_modules/@bitaccess"
+    echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    echo $(pwd)
+    echo $(ls "${BUILD_DIR}")
+    echo $(ls "${BUILD_DIR}/packages")
+    echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    mv "${BUILD_DIR}"/packages/* "${BUILD_DIR}/node_modules/@bitaccess/"
 )
 
 if [ $? -ne 0 ]; then
     echo "FAILED to copy directory into place" | indent
     exit 1
 fi
+
+    echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+echo $(pwd)
+echo $(ls)
+echo $(ls packages/)
+    echo '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 
 echo "Copied ${APP_BASE} to root of app successfully" | indent
 
